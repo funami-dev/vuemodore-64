@@ -1,6 +1,6 @@
 {
   "name": "vuemodore-64",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "private": true,
   "main": "./dist/vuemodore-64.common.js",
   "files": [
@@ -13,7 +13,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:lib": "vue-cli-service build --target lib --name vuemodore64 src/index.js",
+    "build:lib": "vue-cli-service build --target lib src/index.js",
     "lint": "vue-cli-service lint",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
