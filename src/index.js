@@ -8,6 +8,6 @@ const Components = {
 const t = Object.keys(Components).forEach((name) => {
   Vue.component(name, Components[name]);
 });
-console.log(t);
+console.log(t); // eslint-disable-line no-console
 
 export default Components;
