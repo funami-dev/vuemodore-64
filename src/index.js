@@ -5,8 +5,9 @@ const Components = {
   C64Input,
 };
 
-Object.keys(Components).forEach((name) => {
+const t = Object.keys(Components).forEach((name) => {
   Vue.component(name, Components[name]);
 });
+console.log(t);
 
 export default Components;
