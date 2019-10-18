@@ -1,6 +1,6 @@
-import * as components from './components';
+import * as components from './components/Input/index.vue';
+import C64Toggle from './components/Toggle/index.vue';
 
-// import C64Input from './components/Input/index.vue';
-// import C64Toggle from './components/Toggle/index.vue';
+console.log(components);
 
-export default components;
+export { C64Input, C64Toggle };
