@@ -1,11 +1,13 @@
 <template>
-  <div>
-    jetzt geht los... juhuuu1<br>
-    export { default as C64Input } from './components/Input/index.vue';
-  </div>
+  <input type="text" />
 </template>
 <script>
 export default {
-  name: 'C64Input',
+  name: "C64Input"
 };
 </script>
+<style>
+input {
+  background: red;
+}
+</style>
