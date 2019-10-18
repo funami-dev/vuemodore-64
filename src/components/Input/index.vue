@@ -1,13 +1,14 @@
 <template>
-  <input type="text" />
+  <input class="input"
+         type="text" />
 </template>
 <script>
 export default {
-  name: 'C64Input',
+  name: "C64Input"
 };
 </script>
 <style>
-input {
+.input {
   background: red;
 }
 </style>
