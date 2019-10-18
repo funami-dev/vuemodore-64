@@ -6,6 +6,6 @@
 </template>
 <script>
 export default {
-  name: "C64Input"
+  name: 'C64Input',
 };
 </script>

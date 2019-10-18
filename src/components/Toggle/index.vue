@@ -5,6 +5,6 @@
 </template>
 <script>
 export default {
-  name: "C64Toggle"
+  name: 'C64Toggle',
 };
 </script>
