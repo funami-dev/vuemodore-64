@@ -1,6 +1,6 @@
 {
   "name": "vuemodore-64",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "main": "./dist/vuemodore-64.common.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "lint": "vue-cli-service lint",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
-    "deploy": "git add . && git commit --amend && npm version patch"
+    "deploy": "git add . && git commit --amend && npm version patch && yarn build:lib"
   },
   "dependencies": {
     "core-js": "^3.1.2",
