@@ -10,4 +10,4 @@ const t = Object.keys(Components).forEach((name) => {
 });
 console.log(t); // eslint-disable-line no-console
 
-export default Components;
+export default t;
