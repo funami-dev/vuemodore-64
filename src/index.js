@@ -11,7 +11,6 @@ Object.keys(Components).forEach((name) => {
   Vue.component(name, Components[name]);
 });
 
-export default {
-  C64Input,
-  C64Toggle,
-};
+// export default C64Input;
+export { C64Input, C64Toggle };
+// export default Components;
