@@ -1,1 +1,1 @@
-export { default as DummyButton } from './components/Input/index.vue';
+export { default as C64Input } from './components/Input/index.vue';
