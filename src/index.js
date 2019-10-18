@@ -5,9 +5,8 @@ const Components = {
   C64Input,
 };
 
-const t = Object.keys(Components).forEach((name) => {
+Object.keys(Components).forEach((name) => {
   Vue.component(name, Components[name]);
 });
-console.log(t); // eslint-disable-line no-console
 
-export default t;
+export default Components;
