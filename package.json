@@ -1,8 +1,15 @@
 {
   "name": "vuemodore-64",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "private": true,
   "main": "./dist/vuemodore-64.common.js",
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
