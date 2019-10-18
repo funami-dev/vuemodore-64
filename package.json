@@ -1,6 +1,6 @@
 {
   "name": "vuemodore-64",
-  "version": "0.1.30",
+  "version": "0.1.31",
   "private": true,
   "main": "./dist/vuemodore-64.common.js",
   "files": [
