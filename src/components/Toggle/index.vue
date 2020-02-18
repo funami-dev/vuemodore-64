@@ -1,17 +1,26 @@
 <template>
   <div class="c64-switch">
     <input id="c64toggle" type="checkbox" />
-    <label for="c64toggle"></label><span>Turn on</span>
+    <label for="c64toggle"></label><span v-if="label">{{ label }}</span>
   </div>
 </template>
 <script>
 export default {
-  name: 'C64Toggle',
+  name: "V64Toggle",
+  props: {
+    label: {
+      type: String,
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
 .c64-switch {
-  display: flex;
+  font-family: "C64 PRO MONO", "C64 PRO", "Courier New", "Lucida Console", Courier, MENLO, MONACO,
+    monospace;
+  background: $secondary;
+  color: $primary;
+  display: inline-flex;
   input {
     display: none;
     &,

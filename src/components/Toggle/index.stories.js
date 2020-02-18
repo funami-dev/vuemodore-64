@@ -5,7 +5,12 @@ export default {
   component: Toggle,
 };
 
-export const Text = () => ({
+export const SimpleToggle = () => ({
   components: { Toggle },
   template: "<Toggle />",
+});
+
+export const SimpleToggleWithLabel = () => ({
+  components: { Toggle },
+  template: "<Toggle label='ok' />",
 });
