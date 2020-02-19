@@ -15,6 +15,7 @@
 <script>
 import styled, { ThemeProvider } from 'vue-styled-components';
 import V64Head from './header.vue';
+import V64Text from '../Text/index.vue';
 
 const V64_THEME = {
   primary: 'rgb(168, 159, 253)',
@@ -23,11 +24,6 @@ const V64_THEME = {
   lightgrey: 'rgb(187, 187, 187)',
   grey: 'rgb(119, 119, 119)',
 };
-
-const V64Text = styled.pre`
-  margin: 16px 0;
-  color: ${props => props.speed};
-`;
 
 const V64App = styled.div`
   height: 100%;
