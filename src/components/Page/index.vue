@@ -6,6 +6,7 @@
           <V64Head v-if="showHeader" />
           <V64Text v-if="showReady">READY</V64Text>
           <V64Text v-if="showCursor"><Blink>▋</Blink></V64Text>
+          <slot></slot>
         </Inner>
       </Outer>
     </V64App>
