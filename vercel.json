@@ -1,5 +1,10 @@
 {
   "buildCommand": "NODE_OPTIONS=--openssl-legacy-provider yarn build",
   "outputDirectory": "dist",
-  "framework": null
+  "framework": null,
+  "build": {
+    "env": {
+      "CYPRESS_INSTALL_BINARY": "0"
+    }
+  }
 }

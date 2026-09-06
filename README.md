@@ -100,7 +100,9 @@ anywhere. To recolour a whole screen, hand `V64Page` a theme:
 ```
 
 Styling is done with `vue-styled-components`, so the CSS ships inside the
-bundle — consumers need no Sass setup or extra stylesheet import.
+bundle — consumers need no Sass setup or extra stylesheet import. The project
+itself has no Sass toolchain either: `node-sass` cannot be built on a current
+Node release, and nothing imported a stylesheet any more.
 
 ## Conventions
 
@@ -144,4 +146,5 @@ Storybook is deployed by Vercel: every push to `master` publishes
 [vuemodore-64.now.sh](https://vuemodore-64.now.sh/), and every pull request gets
 its own preview. `vercel.json` pins the build command and the output directory so
 the deployment carries the flag above -- Vercel builds on a current Node, where
-the default build crashes.
+the default build crashes. It also skips the Cypress binary download, which the
+Storybook build does not need.
