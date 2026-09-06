@@ -5,11 +5,10 @@
       type="checkbox"
       :checked="checked"
       :disabled="disabled"
+      :value="value"
       @change="onChange"
     />
-    <Rail aria-hidden="true" :checked="checked" :disabled="disabled">
-      <Knob :checked="checked" :disabled="disabled" />
-    </Rail>
+    <Box aria-hidden="true">{{ checked ? 'x' : ' ' }}</Box>
     <LabelText v-if="label || $slots.default"><slot>{{ label }}</slot></LabelText>
   </Root>
 </template>
@@ -18,36 +17,36 @@ import styled from 'vue-styled-components';
 import { color, V64_FONT } from '../../styles/theme';
 import uid from '../../utils/uid';
 
+// The box is a plain text `[x]`, exactly how a C64 BASIC program would have
+// drawn a checkbox on the character grid.
+const Box = styled.span`
+  &:before {
+    content: '[';
+  }
+  &:after {
+    content: ']';
+  }
+`;
+
 const Root = styled('label', { disabled: Boolean })`
   font-family: ${V64_FONT};
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
   color: ${props => (props.disabled ? color('grey')(props) : color('primary')(props))};
-  background: ${color('secondary')};
   user-select: none;
 `;
 
-// The native checkbox stays in the DOM but invisible, so the switch keeps
-// working for keyboard and screen reader users.
+// The native input stays in the DOM but invisible: screen readers and keyboard
+// users get the real control, everyone else sees the character box.
 const Native = styled.input`
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
-`;
 
-const Rail = styled('span', { checked: Boolean, disabled: Boolean })`
-  display: block;
-  position: relative;
-  width: 2em;
-  height: 1em;
-  padding: 1px;
-  border-radius: 0;
-  background: ${props => (props.disabled ? color('grey')(props) : color('primary')(props))};
-
-  input:focus + & {
-    outline: 2px solid ${color('green')};
+  &:focus + span {
+    color: ${color('green')};
   }
 `;
 
@@ -55,23 +54,12 @@ const LabelText = styled.span`
   margin-left: 0.5em;
 `;
 
-const Knob = styled('span', { checked: Boolean, disabled: Boolean })`
-  display: block;
-  width: 50%;
-  height: 100%;
-  border-radius: 0;
-  transition: margin-left 0.2s ease;
-  margin-left: ${props => (props.checked ? '50%' : '0')};
-  background: ${props => (props.checked ? color('secondary')(props) : color('grey')(props))};
-`;
-
 export default {
-  name: 'V64Toggle',
+  name: 'V64Checkbox',
   components: {
     Root,
     Native,
-    Rail,
-    Knob,
+    Box,
     LabelText,
   },
   model: {
@@ -88,6 +76,11 @@ export default {
       type: String,
       default: '',
     },
+    /** Native value attribute, useful when the box is part of a `<form>`. */
+    value: {
+      type: [String, Number],
+      default: null,
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -95,13 +88,13 @@ export default {
   },
   data() {
     return {
-      id: uid('v64-toggle'),
+      id: uid('v64-checkbox'),
     };
   },
   methods: {
     onChange(event) {
       /**
-       * Fired when the switch is flipped (`v-model`).
+       * Fired when the box is ticked or unticked (`v-model`).
        * @event change
        * @type {boolean}
        */

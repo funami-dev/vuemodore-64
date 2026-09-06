@@ -73,6 +73,21 @@
         "env": {
           "jest": true
         }
+      },
+      {
+        "files": [
+          "**/*.stories.js",
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "rules": {
+          "import/no-extraneous-dependencies": [
+            "error",
+            {
+              "devDependencies": true
+            }
+          ]
+        }
       }
     ]
   },

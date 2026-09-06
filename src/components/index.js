@@ -1,2 +1,12 @@
-export * from './Input';
-export * from './Toggle';
+export { default as V64Button } from './Button/index.vue';
+export { default as V64Checkbox } from './Checkbox/index.vue';
+export { default as V64Hero } from './Hero/index.vue';
+export { default as V64Input } from './Input/index.vue';
+export { default as V64Page } from './Page/index.vue';
+export { default as V64ProgressBar } from './ProgressBar/index.vue';
+export { default as V64Radio } from './Radio/index.vue';
+export { default as V64RadioGroup } from './Radio/group.vue';
+export { default as V64Select } from './Select/index.vue';
+export { default as V64Slider } from './Slider/index.vue';
+export { default as V64Text } from './Text/index.vue';
+export { default as V64Toggle } from './Toggle/index.vue';
