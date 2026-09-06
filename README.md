@@ -7,7 +7,7 @@ radios, sliders, banners — drawn the way a C64 would have drawn them: the
 16 colours of the VIC-II chip, an 8x8 monospaced character grid, square
 corners, and no animation the machine could not have managed.
 
-Storybook: [vuemodore-64.now.sh](https://vuemodore-64.now.sh/)
+Storybook: [vuemodore-64.vercel.app](https://vuemodore-64.vercel.app/)
 
 ## Project setup
 
@@ -143,7 +143,7 @@ Webpack 4 cannot use OpenSSL 3, so on Node 17 and newer both builds need
 ## Deployment
 
 Storybook is deployed by Vercel: every push to `master` publishes
-[vuemodore-64.now.sh](https://vuemodore-64.now.sh/), and every pull request gets
+[vuemodore-64.vercel.app](https://vuemodore-64.vercel.app/), and every pull request gets
 its own preview. `engines.node` in `package.json` pins the Node release Vercel builds on -- a
 project configured for a Node version Vercel has since discontinued is rejected
 before the build starts. `vercel.json` pins the build command and the output
