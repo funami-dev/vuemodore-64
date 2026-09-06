@@ -2,6 +2,9 @@
   "name": "vuemodore-64",
   "version": "0.1.35",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "main": "./dist/vuemodore-64.common.js",
   "files": [
     "dist/*",
@@ -46,8 +49,6 @@
     "eslint": "^5.16.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.13.1",
-    "sass-loader": "^8.0.2",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.10"
   },
