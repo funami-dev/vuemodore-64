@@ -21,8 +21,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
     "deploy": "git add . && git commit --amend && npm version patch && yarn build:lib",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook -s ./storybook-static"
+    "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
     "core-js": "^3.1.2",
@@ -31,10 +30,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
-    "@storybook/addon-actions": "^5.3.13",
-    "@storybook/addon-links": "^5.3.13",
+    "@storybook/addon-actions": "6.5.16",
+    "@storybook/addon-essentials": "6.5.16",
+    "@storybook/addon-links": "6.5.16",
     "@storybook/addons": "^5.3.13",
-    "@storybook/vue": "^5.3.13",
+    "@storybook/vue": "6.5.16",
     "@vue/cli-plugin-babel": "^4.0.0",
     "@vue/cli-plugin-e2e-cypress": "^4.0.0",
     "@vue/cli-plugin-eslint": "^4.0.0",

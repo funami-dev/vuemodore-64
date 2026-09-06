@@ -1,20 +1,29 @@
 import V64Textarea from './index.vue';
 
-export default { title: 'Textarea', component: V64Textarea };
+export default {
+  title: 'Textarea',
+  component: V64Textarea,
+  argTypes: { input: { action: 'input' } },
+};
 
-export const Simple = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Textarea },
-  data: () => ({ listing: '10 PRINT "HELLO"\n20 GOTO 10' }),
-  template: "<V64Textarea v-model='listing' label='Listing' :rows='6' block />",
+  data: () => ({ model: args.value }),
+  template: '<V64Textarea v-bind="$props" v-model="model" @input="input" />',
 });
 
-export const WithCounter = () => ({
-  components: { V64Textarea },
-  data: () => ({ note: 'HELLO' }),
-  template: "<V64Textarea v-model='note' label='Note' :maxlength='40' block />",
-});
+export const Simple = Template.bind({});
+Simple.args = {
+  label: 'Listing', value: '10 PRINT "HELLO"\n20 GOTO 10', rows: 6, block: true,
+};
 
-export const WithError = () => ({
-  components: { V64Textarea },
-  template: "<V64Textarea label='Listing' value='?' error='Syntax error' block />",
-});
+export const WithCounter = Template.bind({});
+WithCounter.args = {
+  label: 'Note', value: 'HELLO', maxlength: 40, block: true,
+};
+
+export const WithError = Template.bind({});
+WithError.args = {
+  label: 'Listing', value: '?', error: 'Syntax error', block: true,
+};

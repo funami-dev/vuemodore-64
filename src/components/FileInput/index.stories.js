@@ -1,15 +1,24 @@
-import { action } from '@storybook/addon-actions';
 import V64FileInput from './index.vue';
 
-export default { title: 'FileInput', component: V64FileInput };
+export default {
+  title: 'FileInput',
+  component: V64FileInput,
+  argTypes: { change: { action: 'change' } },
+};
 
-export const Simple = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64FileInput },
-  methods: { onChange: action('change') },
-  template: "<V64FileInput label='Program' block @change='onChange' />",
+  template: '<V64FileInput v-bind="$props" @change="change" />',
 });
 
-export const Multiple = () => ({
-  components: { V64FileInput },
-  template: "<V64FileInput label='Programs' button-text='Load' multiple block />",
-});
+export const Simple = Template.bind({});
+Simple.args = { label: 'Program', block: true };
+
+export const Multiple = Template.bind({});
+Multiple.args = {
+  label: 'Programs', buttonText: 'Load', multiple: true, block: true,
+};
+
+export const WithError = Template.bind({});
+WithError.args = { label: 'Program', error: 'File not found', block: true };

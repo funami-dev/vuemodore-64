@@ -1,15 +1,24 @@
 import V64Divider from './index.vue';
 
-export default { title: 'Divider', component: V64Divider };
+export default {
+  title: 'Divider',
+  component: V64Divider,
+  argTypes: {
+    variant: { control: { type: 'select', options: ['single', 'double', 'dotted'] } },
+  },
+};
 
-export const Single = () => ({ components: { V64Divider }, template: '<V64Divider />' });
-
-export const Double = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Divider },
-  template: "<V64Divider variant='double' />",
+  template: '<div style="width: 30em;"><V64Divider v-bind="$props" /></div>',
 });
 
-export const WithLabel = () => ({
-  components: { V64Divider },
-  template: "<V64Divider label='Options' />",
-});
+export const Single = Template.bind({});
+Single.args = { variant: 'single' };
+
+export const Double = Template.bind({});
+Double.args = { variant: 'double' };
+
+export const WithLabel = Template.bind({});
+WithLabel.args = { label: 'Options' };

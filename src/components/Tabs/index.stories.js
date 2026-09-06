@@ -1,12 +1,17 @@
 import V64Tabs from './index.vue';
 
-export default { title: 'Tabs', component: V64Tabs };
+export default {
+  title: 'Tabs',
+  component: V64Tabs,
+  argTypes: { change: { action: 'change' } },
+};
 
-export const Simple = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Tabs },
-  data: () => ({ open: 'Basic', tabs: ['Basic', 'Assembly', 'Sprites'] }),
+  data: () => ({ model: args.value }),
   template: `
-    <V64Tabs v-model="open" :tabs="tabs" label="Manual">
+    <V64Tabs v-bind="$props" v-model="model" @change="change">
       <template slot="Basic">10 PRINT "HELLO"</template>
       <template slot="Assembly">LDA #$01</template>
       <template slot="Sprites">POKE 2040,13</template>
@@ -14,11 +19,12 @@ export const Simple = () => ({
   `,
 });
 
-export const WithDisabledTab = () => ({
-  components: { V64Tabs },
-  data: () => ({
-    open: 'Basic',
-    tabs: ['Basic', { value: 'sid', label: 'SID', disabled: true }, 'Sprites'],
-  }),
-  template: "<V64Tabs v-model='open' :tabs='tabs' label='Manual' />",
-});
+export const Simple = Template.bind({});
+Simple.args = { label: 'Manual', tabs: ['Basic', 'Assembly', 'Sprites'], value: 'Basic' };
+
+export const WithDisabledTab = Template.bind({});
+WithDisabledTab.args = {
+  label: 'Manual',
+  value: 'Basic',
+  tabs: ['Basic', { value: 'sid', label: 'SID', disabled: true }, 'Sprites'],
+};

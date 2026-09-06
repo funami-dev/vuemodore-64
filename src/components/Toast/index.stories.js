@@ -1,26 +1,43 @@
 import V64Toast from './index.vue';
 import V64Button from '../Button/index.vue';
 
-export default { title: 'Toast', component: V64Toast };
+export default {
+  title: 'Toast',
+  component: V64Toast,
+  argTypes: {
+    placement: {
+      control: {
+        type: 'select',
+        options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+      },
+    },
+    content: { control: 'text', description: 'Default slot content' },
+    close: { action: 'close' },
+  },
+};
 
-export const Simple = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Toast, V64Button },
-  data: () => ({ open: true }),
+  data: () => ({ model: args.open }),
   template: `
     <div>
-      <V64Button @click="open = true">Save</V64Button>
-      <V64Toast v-model="open" title="Saved" :duration="0">38911 basic bytes free</V64Toast>
+      <V64Button @click="model = true">Save</V64Button>
+      <V64Toast v-bind="$props" v-model="model" @close="close">{{ content }}</V64Toast>
     </div>
   `,
 });
 
-export const AutoClosing = () => ({
-  components: { V64Toast, V64Button },
-  data: () => ({ open: true }),
-  template: `
-    <div>
-      <V64Button @click="open = true">Save</V64Button>
-      <V64Toast v-model="open" variant="success" title="Saved" :duration="3000">Gone in 3s</V64Toast>
-    </div>
-  `,
-});
+export const StaysUp = Template.bind({});
+StaysUp.args = {
+  open: true, title: 'Saved', content: '38911 basic bytes free', duration: 0,
+};
+
+export const AutoClosing = Template.bind({});
+AutoClosing.args = {
+  open: true,
+  variant: 'success',
+  title: 'Saved',
+  content: 'Gone in 3 seconds',
+  duration: 3000,
+};

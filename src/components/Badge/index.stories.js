@@ -1,22 +1,30 @@
 import V64Badge from './index.vue';
 
-export default { title: 'Badge', component: V64Badge };
+export default {
+  title: 'Badge',
+  component: V64Badge,
+  argTypes: {
+    variant: { control: { type: 'select', options: ['default', 'success', 'warning', 'danger'] } },
+  },
+};
 
-export const Default = () => ({ components: { V64Badge }, template: "<V64Badge label='New' />" });
-
-export const Success = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Badge },
-  template: "<V64Badge variant='success' label='Saved' />",
+  template: '<V64Badge v-bind="$props" />',
 });
 
-export const Warning = () => ({
-  components: { V64Badge },
-  template: "<V64Badge variant='warning' label='Worn' />",
-});
+export const Default = Template.bind({});
+Default.args = { label: 'New' };
 
-export const Danger = () => ({
-  components: { V64Badge },
-  template: "<V64Badge variant='danger' label='Error' />",
-});
+export const Success = Template.bind({});
+Success.args = { label: 'Saved', variant: 'success' };
 
-export const Count = () => ({ components: { V64Badge }, template: "<V64Badge :label='12' />" });
+export const Warning = Template.bind({});
+Warning.args = { label: 'Worn', variant: 'warning' };
+
+export const Danger = Template.bind({});
+Danger.args = { label: 'Error', variant: 'danger' };
+
+export const Count = Template.bind({});
+Count.args = { label: 12 };

@@ -4,24 +4,40 @@ import V64Button from '../Button/index.vue';
 export default {
   title: 'Hero',
   component: V64Hero,
+  argTypes: { align: { control: { type: 'select', options: ['left', 'center', 'right'] } } },
 };
 
-export const Simple = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Hero },
-  template: "<V64Hero title='Vuemodore 64' subtitle='A Commodore 64 design system for Vue' />",
+  template: '<V64Hero v-bind="$props" />',
 });
 
-export const WithActions = () => ({
+export const Simple = Template.bind({});
+Simple.args = {
+  title: 'Vuemodore 64',
+  subtitle: 'A Commodore 64 design system for Vue',
+};
+
+export const LeftAlignedWithoutStripes = Template.bind({});
+LeftAlignedWithoutStripes.args = {
+  title: 'Ready.',
+  subtitle: 'Type a command',
+  align: 'left',
+  stripes: false,
+};
+
+export const WithActions = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Hero, V64Button },
   template: `
-    <V64Hero title='Vuemodore 64' subtitle='64K RAM system, 38911 basic bytes free'>
+    <V64Hero v-bind="$props">
       <V64Button>Load "*",8,1</V64Button>
-      <V64Button variant='secondary'>List</V64Button>
+      <V64Button variant="secondary">List</V64Button>
     </V64Hero>
   `,
 });
-
-export const LeftAlignedWithoutStripes = () => ({
-  components: { V64Hero },
-  template: "<V64Hero align='left' :stripes='false' title='Ready.' subtitle='Type a command' />",
-});
+WithActions.args = {
+  title: 'Vuemodore 64',
+  subtitle: '64K RAM system, 38911 basic bytes free',
+};

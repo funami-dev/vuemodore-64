@@ -1,6 +1,10 @@
 import V64Terminal from './index.vue';
 
-export default { title: 'Terminal', component: V64Terminal };
+export default {
+  title: 'Terminal',
+  component: V64Terminal,
+  argTypes: { done: { action: 'done' } },
+};
 
 const lines = [
   '**** COMMODORE 64 BASIC V2 ****',
@@ -11,19 +15,17 @@ const lines = [
   'LOADING',
 ];
 
-export const Printed = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Terminal },
-  data: () => ({ lines }),
-  template: "<V64Terminal :lines='lines' block />",
+  template: '<V64Terminal v-bind="$props" @done="done" />',
 });
 
-export const Typewriter = () => ({
-  components: { V64Terminal },
-  data: () => ({ lines }),
-  template: "<V64Terminal :lines='lines' typewriter block />",
-});
+export const Printed = Template.bind({});
+Printed.args = { lines, block: true };
 
-export const PromptOnly = () => ({
-  components: { V64Terminal },
-  template: '<V64Terminal block />',
-});
+export const Typewriter = Template.bind({});
+Typewriter.args = { lines, typewriter: true, block: true };
+
+export const PromptOnly = Template.bind({});
+PromptOnly.args = { block: true };

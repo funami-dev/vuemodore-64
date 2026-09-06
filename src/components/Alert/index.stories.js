@@ -1,28 +1,40 @@
 import V64Alert from './index.vue';
 
-export default { title: 'Alert', component: V64Alert };
+export default {
+  title: 'Alert',
+  component: V64Alert,
+  argTypes: {
+    variant: { control: { type: 'select', options: ['info', 'success', 'warning', 'error'] } },
+    content: { control: 'text', description: 'Default slot content' },
+    dismiss: { action: 'dismiss' },
+  },
+};
 
-export const Error = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Alert },
-  template: "<V64Alert variant='error' title='Syntax error'>Line 20</V64Alert>",
+  template: '<V64Alert v-bind="$props" @dismiss="dismiss">{{ content }}</V64Alert>',
 });
 
-export const Warning = () => ({
-  components: { V64Alert },
-  template: "<V64Alert variant='warning'>Tape may be worn</V64Alert>",
-});
+export const Error = Template.bind({});
+Error.args = {
+  variant: 'error', title: 'Syntax error', content: 'Line 20', block: true,
+};
 
-export const Success = () => ({
-  components: { V64Alert },
-  template: "<V64Alert variant='success'>Saved to drive 8</V64Alert>",
-});
+export const Warning = Template.bind({});
+Warning.args = { variant: 'warning', content: 'Tape may be worn', block: true };
 
-export const Info = () => ({
-  components: { V64Alert },
-  template: '<V64Alert>38911 basic bytes free</V64Alert>',
-});
+export const Success = Template.bind({});
+Success.args = { variant: 'success', content: 'Saved to drive 8', block: true };
 
-export const Dismissible = () => ({
-  components: { V64Alert },
-  template: "<V64Alert variant='error' title='Device not present' dismissible block>Check the cable</V64Alert>",
-});
+export const Info = Template.bind({});
+Info.args = { content: '38911 basic bytes free', block: true };
+
+export const Dismissible = Template.bind({});
+Dismissible.args = {
+  variant: 'error',
+  title: 'Device not present',
+  content: 'Check the cable',
+  dismissible: true,
+  block: true,
+};

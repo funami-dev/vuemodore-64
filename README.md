@@ -21,6 +21,16 @@ yarn install
 yarn storybook
 ```
 
+Storybook 6 with `@storybook/addon-essentials`, so every story is written with
+args: the Controls panel is filled from each component's own props, and props
+can be changed in the browser rather than by editing a story. Actions are
+declared through `argTypes` instead of imported per story.
+
+Two devDependencies look unused and must stay: removing `@storybook/addons` and
+`@storybook/addon-actions` re-resolves the Babel tree and the preview build then
+dies silently -- `build-storybook` still exits 0, but writes no `iframe.html`.
+Check for that file after touching the Storybook dependencies.
+
 ## Usage
 
 Register everything at once:
@@ -172,7 +182,7 @@ yarn lint
 
 ```
 yarn build:lib     # the library bundle
-yarn build         # the Storybook site
+yarn build         # the Storybook site, into dist/
 ```
 
 Webpack 4 cannot use OpenSSL 3, so on Node 17 and newer both builds need

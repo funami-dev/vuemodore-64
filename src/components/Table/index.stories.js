@@ -8,20 +8,23 @@ const columns = [
   { key: 'blocks', label: 'Blocks', align: 'right' },
 ];
 
-const rows = [
-  { name: 'GAME', type: 'PRG', blocks: 122 },
-  { name: 'DEMO', type: 'PRG', blocks: 44 },
-  { name: 'NOTES', type: 'SEQ', blocks: 3 },
-];
-
-export const Simple = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Table },
-  data: () => ({ columns, rows }),
-  template: "<V64Table :columns='columns' :rows='rows' caption='Drive 8' block />",
+  template: '<V64Table v-bind="$props" />',
 });
 
-export const Empty = () => ({
-  components: { V64Table },
-  data: () => ({ columns }),
-  template: "<V64Table :columns='columns' :rows='[]' block />",
-});
+export const Simple = Template.bind({});
+Simple.args = {
+  caption: 'Drive 8',
+  block: true,
+  columns,
+  rows: [
+    { name: 'GAME', type: 'PRG', blocks: 122 },
+    { name: 'DEMO', type: 'PRG', blocks: 44 },
+    { name: 'NOTES', type: 'SEQ', blocks: 3 },
+  ],
+};
+
+export const Empty = Template.bind({});
+Empty.args = { columns, rows: [], block: true };

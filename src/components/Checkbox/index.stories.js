@@ -3,21 +3,21 @@ import V64Checkbox from './index.vue';
 export default {
   title: 'Checkbox',
   component: V64Checkbox,
+  argTypes: { change: { action: 'change' } },
 };
 
-export const Unchecked = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Checkbox },
-  data: () => ({ on: false }),
-  template: "<V64Checkbox v-model='on' label='Fast load' />",
+  data: () => ({ model: args.checked }),
+  template: '<V64Checkbox v-bind="$props" v-model="model" @change="change" />',
 });
 
-export const Checked = () => ({
-  components: { V64Checkbox },
-  data: () => ({ on: true }),
-  template: "<V64Checkbox v-model='on' label='Fast load' />",
-});
+export const Unchecked = Template.bind({});
+Unchecked.args = { label: 'Fast load', checked: false };
 
-export const Disabled = () => ({
-  components: { V64Checkbox },
-  template: "<V64Checkbox label='Turbo tape' disabled />",
-});
+export const Checked = Template.bind({});
+Checked.args = { label: 'Fast load', checked: true };
+
+export const Disabled = Template.bind({});
+Disabled.args = { label: 'Turbo tape', disabled: true };
