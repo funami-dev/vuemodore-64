@@ -16,19 +16,11 @@
 import styled, { ThemeProvider } from 'vue-styled-components';
 import V64Head from './header.vue';
 import V64Text from '../Text/index.vue';
-
-const V64_THEME = {
-  primary: 'rgb(168, 159, 253)',
-  secondary: 'rgb(78, 47, 225)',
-  green: 'rgb(0, 204, 85)',
-  lightgrey: 'rgb(187, 187, 187)',
-  grey: 'rgb(119, 119, 119)',
-};
+import { V64_THEME, V64_FONT } from '../../styles/theme';
 
 const V64App = styled.div`
   height: 100%;
-  font-family: 'C64 PRO MONO', 'C64 PRO', 'Courier New', 'Lucida Console', Courier, MENLO, MONACO,
-    monospace;
+  font-family: ${V64_FONT};
   background: ${props => props.theme.primary};
 `;
 
@@ -57,7 +49,6 @@ const Inner = styled.div`
   order: 0;
   flex: 1 1 auto;
   align-self: stretch;
-  background: $secondary;
   color: ${props => props.theme.primary};
   background: ${props => props.theme.secondary};
 `;
@@ -74,9 +65,9 @@ export default {
     V64Head,
   },
   props: {
+    /** Overrides single colours of the design system for everything inside. */
     theme: {
       type: Object,
-      // default: props => props.theme,
       default: () => V64_THEME,
     },
     showHeader: {

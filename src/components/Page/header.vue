@@ -6,6 +6,7 @@
 </template>
 <script>
 import styled from 'vue-styled-components';
+import { color } from '../../styles/theme';
 
 const V64Head = styled.div`
   text-align: center;
@@ -13,10 +14,11 @@ const V64Head = styled.div`
 
 const V64Text = styled.pre`
   margin: 16px 0;
-  color: ${props => props.speed};
+  color: ${color('primary')};
 `;
 
 export default {
+  name: 'V64PageHeader',
   components: {
     V64Head,
     V64Text,
