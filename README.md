@@ -29,7 +29,10 @@ declared through `argTypes` instead of imported per story.
 Two devDependencies look unused and must stay: removing `@storybook/addons` and
 `@storybook/addon-actions` re-resolves the Babel tree and the preview build then
 dies silently -- `build-storybook` still exits 0, but writes no `iframe.html`.
-Check for that file after touching the Storybook dependencies.
+
+`yarn verify:build` is what stops that reaching a deployment: it fails the build
+unless every entry point is on disk, and the deploy command runs it last. A
+deployment can no longer go green on a Storybook that is only a spinner.
 
 ## Usage
 
