@@ -1,49 +1,49 @@
 <template>
-  <Root :block="block">
-    <FieldLabel v-if="label" :for="id">{{ label }}</FieldLabel>
-    <Shell :disabled="disabled">
-      <Native :id="id" :value="value" :disabled="disabled" @change="onChange">
-        <option v-if="placeholder" value="" disabled>{{ placeholder }}</option>
-        <option
-          v-for="option in normalisedOptions"
-          :key="String(option.value)"
-          :value="option.value"
-          :disabled="option.disabled"
+  <V64FormField :label="label" :error="error" :hint="hint" :block="block">
+    <template slot-scope="field">
+      <Shell :disabled="disabled" :invalid="field.invalid">
+        <Native
+          :id="field.id"
+          :value="value"
+          :disabled="disabled"
+          :aria-invalid="String(field.invalid)"
+          :aria-describedby="field.describedBy"
+          @change="onChange"
         >
-          {{ option.label }}
-        </option>
-      </Native>
-      <Arrow aria-hidden="true">▼</Arrow>
-    </Shell>
-  </Root>
+          <option v-if="placeholder" value="" disabled>{{ placeholder }}</option>
+          <option
+            v-for="option in normalisedOptions"
+            :key="String(option.value)"
+            :value="option.value"
+            :disabled="option.disabled"
+          >
+            {{ option.label }}
+          </option>
+        </Native>
+        <Arrow aria-hidden="true">▼</Arrow>
+      </Shell>
+    </template>
+  </V64FormField>
 </template>
 <script>
 import styled from 'vue-styled-components';
+import V64FormField from '../FormField/index.vue';
 import { color, V64_FONT } from '../../styles/theme';
-import uid from '../../utils/uid';
-
-const Root = styled('div', { block: Boolean })`
-  font-family: ${V64_FONT};
-  display: ${props => (props.block ? 'block' : 'inline-block')};
-  width: ${props => (props.block ? '100%' : 'auto')};
-  color: ${color('primary')};
-`;
-
-const FieldLabel = styled.label`
-  display: block;
-  margin-bottom: 0.5em;
-  text-transform: uppercase;
-  cursor: pointer;
-`;
+import normaliseOptions from '../../utils/normaliseOptions';
 
 // The arrow is a character of its own, so the native dropdown indicator is
 // switched off and replaced by one that matches the character grid.
-const Shell = styled('div', { disabled: Boolean })`
+const Shell = styled('div', { disabled: Boolean, invalid: Boolean })`
   position: relative;
   display: flex;
   align-items: center;
-  border: 2px solid ${props => (props.disabled ? color('grey')(props) : color('primary')(props))};
   background: ${color('secondary')};
+  border: 2px solid
+    ${(props) => {
+    if (props.disabled) return color('grey')(props);
+    if (props.invalid) return color('red')(props);
+    return color('primary')(props);
+  }};
 
   &:focus-within {
     border-color: ${color('green')};
@@ -88,8 +88,7 @@ const Arrow = styled.span`
 export default {
   name: 'V64Select',
   components: {
-    Root,
-    FieldLabel,
+    V64FormField,
     Shell,
     Native,
     Arrow,
@@ -121,6 +120,14 @@ export default {
       type: String,
       default: '',
     },
+    error: {
+      type: String,
+      default: '',
+    },
+    hint: {
+      type: String,
+      default: '',
+    },
     block: {
       type: Boolean,
       default: false,
@@ -130,17 +137,9 @@ export default {
       default: false,
     },
   },
-  data() {
-    return {
-      id: uid('v64-select'),
-    };
-  },
   computed: {
     normalisedOptions() {
-      return this.options.map((option) => {
-        if (option !== null && typeof option === 'object') return option;
-        return { value: option, label: String(option) };
-      });
+      return normaliseOptions(this.options);
     },
   },
   methods: {

@@ -1,10 +1,11 @@
 <template>
   <V64FormField :label="label" :error="error" :hint="hint" :block="block">
+    <template v-if="maxlength" slot="suffix">{{ remaining }}</template>
     <template slot-scope="field">
       <Field
         :id="field.id"
-        :type="type"
         :value="value"
+        :rows="rows"
         :placeholder="placeholder"
         :disabled="disabled"
         :maxlength="maxlength"
@@ -13,8 +14,6 @@
         :aria-describedby="field.describedBy"
         @input="onInput"
         @change="onChange"
-        @focus="$emit('focus', $event)"
-        @blur="$emit('blur', $event)"
       />
     </template>
   </V64FormField>
@@ -25,12 +24,13 @@ import V64FormField from '../FormField/index.vue';
 import { color, V64_FONT } from '../../styles/theme';
 import domValue from '../../utils/domValue';
 
-const Field = styled('input', { invalid: Boolean })`
+const Field = styled('textarea', { invalid: Boolean })`
   font-family: ${V64_FONT};
   font-size: 1em;
   width: 100%;
   padding: 0.5em;
   border-radius: 0;
+  resize: vertical;
   border: 2px solid ${props => (props.invalid ? color('red')(props) : color('primary')(props))};
   color: ${color('primary')};
   background: ${color('secondary')};
@@ -53,7 +53,7 @@ const Field = styled('input', { invalid: Boolean })`
 `;
 
 export default {
-  name: 'V64Input',
+  name: 'V64Textarea',
   components: {
     V64FormField,
     Field,
@@ -65,7 +65,7 @@ export default {
   props: {
     /** Bound with `v-model`. */
     value: {
-      type: [String, Number],
+      type: String,
       default: '',
     },
     label: {
@@ -76,12 +76,10 @@ export default {
       type: String,
       default: '',
     },
-    type: {
-      type: String,
-      default: 'text',
-      validator: value => ['text', 'password', 'email', 'search', 'tel', 'url'].includes(value),
+    rows: {
+      type: Number,
+      default: 4,
     },
-    /** Message shown below the field; also switches the field to its error colours. */
     error: {
       type: String,
       default: '',
@@ -90,8 +88,9 @@ export default {
       type: String,
       default: '',
     },
+    /** Also turns on the remaining-character count next to the label. */
     maxlength: {
-      type: [String, Number],
+      type: Number,
       default: null,
     },
     block: {
@@ -101,6 +100,11 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    remaining() {
+      return this.maxlength - String(this.value).length;
     },
   },
   methods: {

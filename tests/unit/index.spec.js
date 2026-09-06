@@ -8,18 +8,41 @@ describe('public entry point', () => {
     // invisible to consumers, which is how the previous entry point broke.
     const exported = Object.keys(components);
     expect(exported).toEqual([
+      'V64Alert',
+      'V64Badge',
+      'V64Breadcrumb',
       'V64Button',
       'V64Checkbox',
+      'V64Divider',
+      'V64FileInput',
+      'V64FormField',
       'V64Hero',
       'V64Input',
+      'V64Key',
+      'V64Link',
+      'V64LoadingScreen',
+      'V64Menu',
+      'V64Modal',
+      'V64NumberInput',
       'V64Page',
+      'V64Pagination',
+      'V64Panel',
+      'V64PixelIcon',
       'V64ProgressBar',
       'V64Radio',
       'V64RadioGroup',
+      'V64Scroller',
       'V64Select',
       'V64Slider',
+      'V64Spinner',
+      'V64Table',
+      'V64Tabs',
+      'V64Terminal',
       'V64Text',
+      'V64Textarea',
+      'V64Toast',
       'V64Toggle',
+      'V64Tooltip',
     ]);
   });
 
@@ -37,7 +60,7 @@ describe('public entry point', () => {
     install({ component: name => registered.push(name) });
     expect(registered).toContain('V64Button');
     expect(registered).toContain('V64Toggle');
-    expect(registered).toHaveLength(12);
+    expect(registered).toHaveLength(35);
   });
 
   it('does not register a second time', () => {

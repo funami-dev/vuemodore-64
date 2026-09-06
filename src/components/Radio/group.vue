@@ -18,6 +18,7 @@ import styled from 'vue-styled-components';
 import V64Radio from './index.vue';
 import { color, V64_FONT } from '../../styles/theme';
 import uid from '../../utils/uid';
+import normaliseOptions from '../../utils/normaliseOptions';
 
 const Root = styled('div', { inline: Boolean })`
   font-family: ${V64_FONT};
@@ -84,10 +85,7 @@ export default {
   },
   computed: {
     normalisedOptions() {
-      return this.options.map((option) => {
-        if (option !== null && typeof option === 'object') return option;
-        return { value: option, label: String(option) };
-      });
+      return normaliseOptions(this.options);
     },
   },
 };

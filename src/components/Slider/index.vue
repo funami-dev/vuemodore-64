@@ -1,52 +1,30 @@
 <template>
-  <Root :block="block">
-    <TopLine v-if="label || showValue">
-      <FieldLabel v-if="label" :for="id">{{ label }}</FieldLabel>
-      <Readout v-if="showValue">{{ value }}</Readout>
-    </TopLine>
-    <Range
-      :id="id"
-      type="range"
-      :value="value"
-      :min="min"
-      :max="max"
-      :step="step"
-      :disabled="disabled"
-      :aria-valuemin="min"
-      :aria-valuemax="max"
-      :aria-valuenow="value"
-      @input="onInput"
-      @change="onChange"
-    />
-  </Root>
+  <V64FormField :label="label" :error="error" :hint="hint" :block="block">
+    <template v-if="showValue" slot="suffix">{{ value }}</template>
+    <template slot-scope="field">
+      <Range
+        :id="field.id"
+        type="range"
+        :value="value"
+        :min="min"
+        :max="max"
+        :step="step"
+        :disabled="disabled"
+        :aria-valuemin="min"
+        :aria-valuemax="max"
+        :aria-valuenow="value"
+        :aria-describedby="field.describedBy"
+        @input="onInput"
+        @change="onChange"
+      />
+    </template>
+  </V64FormField>
 </template>
 <script>
 import styled from 'vue-styled-components';
-import { color, V64_FONT } from '../../styles/theme';
-import uid from '../../utils/uid';
+import V64FormField from '../FormField/index.vue';
+import { color } from '../../styles/theme';
 import domValue from '../../utils/domValue';
-
-const Root = styled('div', { block: Boolean })`
-  font-family: ${V64_FONT};
-  display: ${props => (props.block ? 'block' : 'inline-block')};
-  width: ${props => (props.block ? '100%' : '16em')};
-  color: ${color('primary')};
-`;
-
-const TopLine = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5em;
-  text-transform: uppercase;
-`;
-
-const FieldLabel = styled.label`
-  cursor: pointer;
-`;
-
-const Readout = styled.span`
-  margin-left: 1em;
-`;
 
 // Both engines need their thumb and track styled separately, and neither
 // understands the other's selector -- so the rules are spelled out twice
@@ -114,10 +92,7 @@ const Range = styled.input`
 export default {
   name: 'V64Slider',
   components: {
-    Root,
-    TopLine,
-    FieldLabel,
-    Readout,
+    V64FormField,
     Range,
   },
   model: {
@@ -151,6 +126,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    error: {
+      type: String,
+      default: '',
+    },
+    hint: {
+      type: String,
+      default: '',
+    },
     block: {
       type: Boolean,
       default: false,
@@ -159,11 +142,6 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  data() {
-    return {
-      id: uid('v64-slider'),
-    };
   },
   methods: {
     onInput(payload) {
