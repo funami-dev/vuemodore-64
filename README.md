@@ -144,7 +144,10 @@ Webpack 4 cannot use OpenSSL 3, so on Node 17 and newer both builds need
 
 Storybook is deployed by Vercel: every push to `master` publishes
 [vuemodore-64.now.sh](https://vuemodore-64.now.sh/), and every pull request gets
-its own preview. `vercel.json` pins the build command and the output directory so
+its own preview. `engines.node` in `package.json` pins the Node release Vercel builds on -- a
+project configured for a Node version Vercel has since discontinued is rejected
+before the build starts. `vercel.json` pins the build command and the output
+directory so
 the deployment carries the flag above -- Vercel builds on a current Node, where
 the default build crashes. It also skips the Cypress binary download, which the
 Storybook build does not need.

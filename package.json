@@ -2,6 +2,9 @@
   "name": "vuemodore-64",
   "version": "0.1.35",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "main": "./dist/vuemodore-64.common.js",
   "files": [
     "dist/*",
