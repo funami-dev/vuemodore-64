@@ -48,6 +48,10 @@ const Inner = styled.div`
   margin: 8%;
   order: 0;
   flex: 1 1 auto;
+  /* A flex item defaults to min-width:auto, so the page refuses to shrink
+     below its widest non-wrapping child -- a ticker, a wide table, one long
+     line -- and drags every other element out with it. */
+  min-width: 0;
   align-self: stretch;
   color: ${props => props.theme.primary};
   background: ${props => props.theme.secondary};
