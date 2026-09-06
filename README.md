@@ -130,7 +130,18 @@ yarn lint
 ## Build
 
 ```
-yarn build:lib
+yarn build:lib     # the library bundle
+yarn build         # the Storybook site
 ```
 
-On Node 17 and newer, webpack 4 needs `NODE_OPTIONS=--openssl-legacy-provider`.
+Webpack 4 cannot use OpenSSL 3, so on Node 17 and newer both builds need
+`NODE_OPTIONS=--openssl-legacy-provider`. Without it they stop with
+`ERR_OSSL_EVP_UNSUPPORTED`.
+
+## Deployment
+
+Storybook is deployed by Vercel: every push to `master` publishes
+[vuemodore-64.now.sh](https://vuemodore-64.now.sh/), and every pull request gets
+its own preview. `vercel.json` pins the build command and the output directory so
+the deployment carries the flag above -- Vercel builds on a current Node, where
+the default build crashes.
