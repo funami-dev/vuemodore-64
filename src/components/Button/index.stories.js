@@ -1,33 +1,32 @@
-import { action } from '@storybook/addon-actions';
 import V64Button from './index.vue';
 
 export default {
   title: 'Button',
   component: V64Button,
+  argTypes: {
+    variant: { control: { type: 'select', options: ['primary', 'secondary', 'danger'] } },
+    label: { control: 'text', description: 'Default slot content' },
+    click: { action: 'click' },
+  },
 };
 
-export const Primary = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Button },
-  methods: { onClick: action('click') },
-  template: "<V64Button @click='onClick'>Run</V64Button>",
+  template: '<V64Button v-bind="$props" @click="click">{{ label }}</V64Button>',
 });
 
-export const Secondary = () => ({
-  components: { V64Button },
-  template: "<V64Button variant='secondary'>Load</V64Button>",
-});
+export const Primary = Template.bind({});
+Primary.args = { label: 'Run', variant: 'primary' };
 
-export const Danger = () => ({
-  components: { V64Button },
-  template: "<V64Button variant='danger'>Delete</V64Button>",
-});
+export const Secondary = Template.bind({});
+Secondary.args = { label: 'Load', variant: 'secondary' };
 
-export const Disabled = () => ({
-  components: { V64Button },
-  template: '<V64Button disabled>Save</V64Button>',
-});
+export const Danger = Template.bind({});
+Danger.args = { label: 'Delete', variant: 'danger' };
 
-export const Block = () => ({
-  components: { V64Button },
-  template: '<V64Button block>List</V64Button>',
-});
+export const Disabled = Template.bind({});
+Disabled.args = { label: 'Save', disabled: true };
+
+export const Block = Template.bind({});
+Block.args = { label: 'List', block: true };

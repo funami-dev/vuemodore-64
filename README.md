@@ -21,6 +21,16 @@ yarn install
 yarn storybook
 ```
 
+Storybook 6 with `@storybook/addon-essentials`, so every story is written with
+args: the Controls panel is filled from each component's own props, and props
+can be changed in the browser rather than by editing a story. Actions are
+declared through `argTypes` instead of imported per story.
+
+Two devDependencies look unused and must stay: removing `@storybook/addons` and
+`@storybook/addon-actions` re-resolves the Babel tree and the preview build then
+dies silently -- `build-storybook` still exits 0, but writes no `iframe.html`.
+Check for that file after touching the Storybook dependencies.
+
 ## Usage
 
 Register everything at once:
@@ -46,23 +56,56 @@ export default {
 
 | Component | Purpose | `v-model` |
 | --- | --- | --- |
-| `V64Button` | Action button, `primary` / `secondary` / `danger` | — |
-| `V64Checkbox` | Tick box drawn as `[x]` | `Boolean` |
-| `V64Hero` | Banner framed by the tape loading stripes | — |
-| `V64Input` | Single line text field with label and error state | `String` |
+| **Layout & content** | | |
 | `V64Page` | Screen frame with the boot header, sets the theme | — |
-| `V64ProgressBar` | Character based bar, determinate or endless | — |
+| `V64Hero` | Banner framed by the tape loading stripes | — |
+| `V64Panel` | Window with a title bar; the base for `V64Modal` | — |
+| `V64Divider` | Rule drawn with box characters, optionally labelled | — |
+| `V64Text` | Monospaced text block, keeps its whitespace | — |
+| `V64Table` | Directory-listing table, scrolls inside its own box | — |
+| **Actions** | | |
+| `V64Button` | Action button, `primary` / `secondary` / `danger` | — |
+| `V64Link` | Anchor; a `_blank` link gets a safe `rel` and a marker | — |
+| `V64Badge` | Inverted-character tag, four tones | — |
+| `V64Key` | Keycap from the C64's own keyboard | — |
+| **Feedback** | | |
+| `V64Alert` | Message in the `?SYNTAX ERROR` idiom, four variants | — |
+| `V64Toast` | Alert pinned to a corner, closes itself | `Boolean` |
+| `V64Modal` | Dialog over the page, Escape and focus handled | `Boolean` |
+| `V64Spinner` | Rotating character cursor for short waits | — |
+| `V64ProgressBar` | Character bar, determinate or endless | — |
+| `V64LoadingScreen` | Full tape loading screen with flashing border | — |
+| `V64Tooltip` | Bubble on hover and on focus | — |
+| **Forms** | | |
+| `V64FormField` | Label, hint and error for any control | — |
+| `V64Input` | Single line text field | `String` |
+| `V64Textarea` | Multi-line field with a character count | `String` |
+| `V64NumberInput` | Number field with stepper buttons | `Number` |
+| `V64FileInput` | File picker behind a `PRESS PLAY ON TAPE` button | — |
+| `V64Select` | Dropdown with a character arrow | `String` |
 | `V64Radio` | Single radio drawn as `(*)` | value of the group |
 | `V64RadioGroup` | Radios from an `options` array | value of the group |
-| `V64Select` | Dropdown with a character arrow | `String` |
-| `V64Slider` | Range control with an optional readout | `Number` |
-| `V64Text` | Monospaced text block, keeps its whitespace | — |
+| `V64Checkbox` | Tick box drawn as `[x]` | `Boolean` |
 | `V64Toggle` | On/off switch | `Boolean` |
+| `V64Slider` | Range control with an optional readout | `Number` |
+| **Navigation** | | |
+| `V64Menu` | Game menu with a `>` cursor and arrow keys | — |
+| `V64Tabs` | Tabs with arrow-key navigation and panels | `String` |
+| `V64Breadcrumb` | Trail to the current page | — |
+| `V64Pagination` | Pager that keeps its width at any page count | `Number` |
+| **C64 flavour** | | |
+| `V64Terminal` | Console output, optionally typed out character by character | — |
+| `V64Scroller` | Demoscene scrolltext, seamless | — |
+| `V64PixelIcon` | Sprite drawn as rows of characters | — |
 
 Every form component supports `v-model`, a `disabled` state, keyboard use and a
-label that is tied to its control. `V64Button`, `V64Input`, `V64Select`,
-`V64Slider` and `V64ProgressBar` take `block` to fill the width of their
+label that is tied to its control through `V64FormField`, which also carries the
+hint and error text. Most components take `block` to fill the width of their
 container.
+
+Components that take a list -- `V64Select`, `V64RadioGroup`, `V64Menu`,
+`V64Tabs` -- accept plain strings and numbers as well as
+`{ value, label, disabled }` objects, so the common case stays short.
 
 Each component has its own story; `yarn storybook` shows every state, and the
 **All** story renders them together on one screen.
@@ -116,9 +159,15 @@ Anything added to the library follows the existing components:
   closed. Props are never mutated — state changes leave as events.
 - Form components declare `model`, generate their own id with
   `src/utils/uid.js`, and label their control.
-- Styled component names must not collide with an HTML or SVG tag. Vue treats
-  `Track`, `Title`, `Head`, `Body` and `Legend` as reserved, and a name that
-  matches a void element such as `<track>` silently breaks the template.
+- Styled component names must not collide with an HTML or SVG tag, and must
+  differ from the component's own `name` (Vue would resolve it to itself and
+  recurse). `Track`, `Title`, `Head`, `Body`, `Legend`, `Line`, `Cursor`,
+  `Caption`, `Content` and `Footer` are all taken; a name matching a void
+  element such as `<track>` silently breaks the template.
+- A styled `input` hands its `@input` listener the value as a string rather than
+  the DOM event -- `src/utils/domValue.js` absorbs the difference.
+- Timers belong in `mounted`, not in an `immediate` watcher: the watcher runs
+  before the component exists.
 
 ## Tests and linting
 
@@ -133,7 +182,7 @@ yarn lint
 
 ```
 yarn build:lib     # the library bundle
-yarn build         # the Storybook site
+yarn build         # the Storybook site, into dist/
 ```
 
 Webpack 4 cannot use OpenSSL 3, so on Node 17 and newer both builds need

@@ -3,22 +3,34 @@ import V64Select from './index.vue';
 export default {
   title: 'Select',
   component: V64Select,
+  argTypes: { change: { action: 'change' } },
 };
 
-export const Simple = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Select },
-  data: () => ({ device: 'Disk', options: ['Tape', 'Disk', 'Cartridge'] }),
-  template: "<V64Select v-model='device' label='Device' :options='options' />",
+  data: () => ({ model: args.value }),
+  template: '<V64Select v-bind="$props" v-model="model" @change="change" />',
 });
 
-export const WithPlaceholder = () => ({
-  components: { V64Select },
-  data: () => ({ device: '', options: ['Tape', 'Disk'] }),
-  template: "<V64Select v-model='device' label='Device' placeholder='SELECT...' :options='options' />",
-});
+export const Simple = Template.bind({});
+Simple.args = {
+  label: 'Device',
+  options: ['Tape', 'Disk', 'Cartridge'],
+  value: 'Disk',
+  block: true,
+};
 
-export const Disabled = () => ({
-  components: { V64Select },
-  data: () => ({ options: ['Tape'] }),
-  template: "<V64Select label='Device' :options='options' disabled />",
-});
+export const WithPlaceholder = Template.bind({});
+WithPlaceholder.args = {
+  label: 'Device',
+  placeholder: 'SELECT...',
+  options: ['Tape', 'Disk'],
+  value: '',
+  block: true,
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  label: 'Device', options: ['Tape'], disabled: true, block: true,
+};

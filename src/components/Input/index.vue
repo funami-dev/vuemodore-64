@@ -1,43 +1,29 @@
 <template>
-  <Wrapper :block="block">
-    <FieldLabel v-if="label" :for="id">{{ label }}</FieldLabel>
-    <Field
-      :id="id"
-      :type="type"
-      :value="value"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      :maxlength="maxlength"
-      :invalid="Boolean(error)"
-      :aria-invalid="String(Boolean(error))"
-      :aria-describedby="error ? `${id}-error` : null"
-      @input="onInput"
-      @change="onChange"
-      @focus="$emit('focus', $event)"
-      @blur="$emit('blur', $event)"
-    />
-    <Error v-if="error" :id="`${id}-error`" role="alert">{{ error }}</Error>
-  </Wrapper>
+  <V64FormField :label="label" :error="error" :hint="hint" :block="block">
+    <template slot-scope="field">
+      <Field
+        :id="field.id"
+        :type="type"
+        :value="value"
+        :placeholder="placeholder"
+        :disabled="disabled"
+        :maxlength="maxlength"
+        :invalid="field.invalid"
+        :aria-invalid="String(field.invalid)"
+        :aria-describedby="field.describedBy"
+        @input="onInput"
+        @change="onChange"
+        @focus="$emit('focus', $event)"
+        @blur="$emit('blur', $event)"
+      />
+    </template>
+  </V64FormField>
 </template>
 <script>
 import styled from 'vue-styled-components';
+import V64FormField from '../FormField/index.vue';
 import { color, V64_FONT } from '../../styles/theme';
-import uid from '../../utils/uid';
 import domValue from '../../utils/domValue';
-
-const Wrapper = styled('div', { block: Boolean })`
-  font-family: ${V64_FONT};
-  display: ${props => (props.block ? 'block' : 'inline-block')};
-  width: ${props => (props.block ? '100%' : 'auto')};
-  color: ${color('primary')};
-`;
-
-const FieldLabel = styled.label`
-  display: block;
-  margin-bottom: 0.5em;
-  text-transform: uppercase;
-  cursor: pointer;
-`;
 
 const Field = styled('input', { invalid: Boolean })`
   font-family: ${V64_FONT};
@@ -66,19 +52,11 @@ const Field = styled('input', { invalid: Boolean })`
   }
 `;
 
-const Error = styled.div`
-  margin-top: 0.5em;
-  color: ${color('red')};
-  text-transform: uppercase;
-`;
-
 export default {
   name: 'V64Input',
   components: {
-    Wrapper,
-    FieldLabel,
+    V64FormField,
     Field,
-    Error,
   },
   model: {
     prop: 'value',
@@ -101,10 +79,14 @@ export default {
     type: {
       type: String,
       default: 'text',
-      validator: value => ['text', 'password', 'email', 'number', 'search', 'tel'].includes(value),
+      validator: value => ['text', 'password', 'email', 'search', 'tel', 'url'].includes(value),
     },
     /** Message shown below the field; also switches the field to its error colours. */
     error: {
+      type: String,
+      default: '',
+    },
+    hint: {
       type: String,
       default: '',
     },
@@ -120,11 +102,6 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  data() {
-    return {
-      id: uid('v64-input'),
-    };
   },
   methods: {
     onInput(payload) {

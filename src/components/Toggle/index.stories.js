@@ -3,21 +3,21 @@ import V64Toggle from './index.vue';
 export default {
   title: 'Toggle',
   component: V64Toggle,
+  argTypes: { change: { action: 'change' } },
 };
 
-export const Simple = () => ({
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
   components: { V64Toggle },
-  data: () => ({ on: false }),
-  template: "<V64Toggle v-model='on' />",
+  data: () => ({ model: args.checked }),
+  template: '<V64Toggle v-bind="$props" v-model="model" @change="change" />',
 });
 
-export const WithLabel = () => ({
-  components: { V64Toggle },
-  data: () => ({ on: true }),
-  template: "<V64Toggle v-model='on' label='Sound' />",
-});
+export const Simple = Template.bind({});
+Simple.args = { checked: false };
 
-export const Disabled = () => ({
-  components: { V64Toggle },
-  template: "<V64Toggle label='Sound' disabled />",
-});
+export const WithLabel = Template.bind({});
+WithLabel.args = { label: 'Sound', checked: true };
+
+export const Disabled = Template.bind({});
+Disabled.args = { label: 'Sound', disabled: true };
