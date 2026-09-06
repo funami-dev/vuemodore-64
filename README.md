@@ -189,6 +189,37 @@ Webpack 4 cannot use OpenSSL 3, so on Node 17 and newer both builds need
 `NODE_OPTIONS=--openssl-legacy-provider`. Without it they stop with
 `ERR_OSSL_EVP_UNSUPPORTED`.
 
+## Example site
+
+`src/example/` is a fictional online magazine for a C64 community, *Return to
+Basic*, built to put the library through a real page rather than isolated
+stories. It uses every component: a masthead and scrolling ticker, tabs for the
+sections, a lead article with a type-in listing typed out character by
+character, sortable and paginated demo charts, a poll that turns into result
+bars, a letters page with a validated form, an upload workshop, an order dialog,
+a CRT toggle and a tape loading screen when you switch issues.
+
+```
+yarn serve          # the magazine, on its own
+yarn build:example  # into dist/example
+```
+
+It deploys alongside Storybook: `vercel.json` builds both, so the published site
+serves Storybook at `/` and the magazine at `/example/`.
+
+Building it found three layout bugs that isolated stories had hidden, all the
+same shape -- something that cannot wrap widening everything around it:
+
+- `V64Page` let its content set the page width, because a flex item defaults to
+  `min-width: auto`. One ticker made the whole page 4000px wide.
+- `V64Divider` had the same problem with its 200-character rule.
+- `V64Text` rendered a bare `pre`, which never wraps, so a paragraph of prose
+  pushed the page out. It keeps whitespace but wraps now.
+
+Layout is the one thing the unit tests cannot see: `vue-styled-components`
+injects no CSS under jsdom, so `document.styleSheets` is empty in tests. Check
+layout changes against the example page in a browser.
+
 ## Deployment
 
 Storybook is deployed by Vercel: every push to `master` publishes

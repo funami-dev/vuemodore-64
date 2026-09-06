@@ -10,6 +10,11 @@ import { color as themeColor, V64_FONT } from '../../styles/theme';
 const Root = styled('pre', { color: String })`
   font-family: ${V64_FONT};
   margin: 16px 0;
+  /* A bare pre element never wraps, so one long paragraph widens the whole
+     page. pre-wrap keeps the spaces and line breaks a listing depends on
+     while still letting prose break at the edge of its container. */
+  white-space: pre-wrap;
+  word-break: break-word;
   color: ${props => props.color || themeColor('primary')(props)};
 `;
 

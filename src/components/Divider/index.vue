@@ -29,8 +29,13 @@ const Root = styled.div`
   margin: 1em 0;
 `;
 
+// `min-width: 0` is what lets the rule shrink: a flex item defaults to
+// `min-width: auto`, which is the width of its content -- 200 box characters
+// here -- so without it the divider widens every page it sits on and
+// `overflow: hidden` never gets the chance to clip.
 const Rule = styled.div`
   flex: 1 1 auto;
+  min-width: 0;
   overflow: hidden;
   white-space: nowrap;
   user-select: none;

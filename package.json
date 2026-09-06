@@ -21,7 +21,8 @@
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
     "deploy": "git add . && git commit --amend && npm version patch && yarn build:lib",
-    "storybook": "start-storybook -p 6006"
+    "storybook": "start-storybook -p 6006",
+    "build:example": "vue-cli-service build --dest dist/example"
   },
   "dependencies": {
     "core-js": "^3.1.2",
